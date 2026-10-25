@@ -42,7 +42,10 @@ public final class RegionUtils {
     /// The two-letter region code detected at class initialization, or `null` if none can be determined.
     /// Shared time zones require a matching locale region or Windows user GeoID.
     /// Later changes to system settings do not update this value.
-    public static final @Nullable String MACHINE_REGION = detectMachineRegion();
+    /// 强制不把中国大陆识别为机器地区，用于绕过下载限制。
+    private static @Nullable String filterChinaRegion(@Nullable String region) {
+    return "CN".equals(region) ? null : region;
+        }
 
     /// Detects the region from the system time zone, using [LocaleUtils#SYSTEM_DEFAULT]
     /// and the Windows user GeoID to resolve ambiguity or supply a missing mapping.
